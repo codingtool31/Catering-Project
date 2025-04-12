@@ -1,6 +1,7 @@
 import React from 'react';
 
-import background from '../assets/background.webp';
+import background from '../assets/background2.jpg';
+import Footer from '../pages/Footer';
 
 function Home() {
   return (
@@ -120,8 +121,11 @@ function Home() {
           </button>
         </form>
       </div>
+      <Footer/>
     </div>
+  
   );
+ 
 }
 
 export default Home;

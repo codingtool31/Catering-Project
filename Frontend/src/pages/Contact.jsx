@@ -1,68 +1,104 @@
 import React, { useState } from 'react';
+import ContactPic from '../assets/ContactPic.jpg'; // Your image path
 
-function Contact() {
-  const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
-  const [submitted, setSubmitted] = useState(false);
+const Contact = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: ''
+  });
 
-  // Handle form submission
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Normally, you'd send this data to a server or email service
-    // Here, we'll just simulate the submission
-    setSubmitted(true);
+    console.log('Form Submitted', formData);
   };
 
   return (
-    <div className="bg-white min-h-screen py-16 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-xl mx-auto">
-        <h1 className="text-4xl font-extrabold text-center text-black mb-8">Contact Us</h1>
-        
-        {/* Form Section */}
-        <form onSubmit={handleSubmit} className="bg-gray-50 p-8 rounded-lg shadow-lg">
-          <div className="mb-6">
-            <label htmlFor="email" className="block text-lg font-medium text-black mb-2">Email</label>
+    <div className="flex flex-col lg:flex-row min-h-screen bg-white text-gray-900">
+      {/* Left Side: Image */}
+      <div className="lg:w-1/2 bg-cover bg-center" style={{ backgroundImage: `url(${ContactPic})` }}>
+        {/* Background image */}
+      </div>
+
+      {/* Right Side: Contact Form */}
+      <div className="lg:w-1/2 p-8 flex flex-col justify-center bg-gray-100 shadow-2xl rounded-lg">
+        <h2 className="text-4xl font-bold text-center text-gray-900 mb-8">Contact Us</h2>
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Name */}
+          <div>
+            <label htmlFor="name" className="block text-lg font-medium text-gray-700">Your Name</label>
             <input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              type="text"
+              id="name"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              className="w-full p-4 mt-2 bg-white text-gray-900 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:ring-opacity-50"
               required
-              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-              placeholder="Enter your email"
             />
           </div>
 
-          <div className="mb-6">
-            <label htmlFor="message" className="block text-lg font-medium text-black mb-2">Message</label>
+          {/* Email */}
+          <div>
+            <label htmlFor="email" className="block text-lg font-medium text-gray-700">Your Email</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              className="w-full p-4 mt-2 bg-white text-gray-900 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:ring-opacity-50"
+              required
+            />
+          </div>
+
+          {/* Message */}
+          <div>
+            <label htmlFor="message" className="block text-lg font-medium text-gray-700">Your Message</label>
             <textarea
               id="message"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              required
+              name="message"
+              value={formData.message}
+              onChange={handleChange}
+              className="w-full p-4 mt-2 bg-white text-gray-900 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:ring-opacity-50"
               rows="4"
-              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-              placeholder="Enter your message"
+              required
             />
           </div>
 
+          {/* Submit Button */}
           <button
             type="submit"
-            className="w-full bg-black text-white py-3 px-6 rounded-lg hover:bg-gray-800 transition duration-300"
+            className="w-full p-4 mt-4 bg-black text-white font-semibold rounded-lg border-2 border-gray-600 hover:bg-gray-900 transition duration-300 ease-in-out"
           >
-            Send Email
+            Send Message
           </button>
         </form>
 
-        {/* Submission Confirmation */}
-        {submitted && (
-          <div className="mt-8 text-center text-green-600 font-semibold">
-            <p>Thank you for reaching out! We'll get back to you soon.</p>
-          </div>
-        )}
+        {/* New Button to Open WhatsApp Chat */}
+        <div className="flex items-center justify-center mt-8">
+          <a
+            href="https://wa.me/923334625996" // Updated with the WhatsApp URL
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center space-x-2 bg-green-600 p-4 rounded-lg text-white hover:bg-green-500 transition duration-300 ease-in-out transform hover:scale-105"
+          >
+            <i className="fab fa-whatsapp text-2xl"></i>
+            <span className="text-lg">Open WhatsApp Chat</span>
+          </a>
+        </div>
       </div>
     </div>
   );
-}
+};
 
 export default Contact;
