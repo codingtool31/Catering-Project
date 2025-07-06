@@ -15,11 +15,56 @@ function Signup() {
       [name]: value,
     }));
   };
+const [isAdmin, setIsAdmin] = useState(false);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Signup Form Submitted', formData);
+//   const handleSubmit = async (e) => {
+//   e.preventDefault();
+//   try {
+//     const response = await fetch('http://localhost:5000/api/signup', {
+//       method: 'POST',
+//       headers: { 'Content-Type': 'application/json' },
+//       body: JSON.stringify(formData),
+//     });
+
+//     const data = await response.json();
+//     if (response.ok) {
+//       console.log('Signup successful:', data);
+//       alert('Signup successful! You can now log in.');
+//     } else {
+//       alert(data.message || 'Signup failed');
+//     }
+//   } catch (error) {
+//     console.error('Signup error:', error);
+//     alert('Signup failed');
+//   }
+// };
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  const payload = {
+    ...formData,
+    role: isAdmin ? 'admin' : 'user',
+    adminCode: isAdmin ? formData.adminCode : undefined,
   };
+
+  try {
+    const response = await fetch('http://localhost:5000/api/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+
+    const data = await response.json();
+    if (response.ok) {
+      alert('Signup successful');
+    } else {
+      alert(data.message || 'Signup failed');
+    }
+  } catch (error) {
+    console.error(error);
+    alert('Signup error');
+  }
+};
+
 
   return (
     <div className="flex flex-col justify-center items-center min-h-screen bg-gray-100 py-12">
@@ -82,6 +127,35 @@ function Signup() {
               />
             </div>
           </div>
+{/* Admin Toggle */}
+<div className="mt-4">
+  <label className="inline-flex items-center">
+    <input
+      type="checkbox"
+      checked={isAdmin}
+      onChange={() => setIsAdmin(!isAdmin)}
+      className="mr-2"
+    />
+    Register as Admin
+  </label>
+</div>
+
+{isAdmin && (
+  <div className="mt-4">
+    <label htmlFor="adminCode" className="block text-sm font-medium text-gray-700">
+      Admin Code
+    </label>
+    <input
+      type="text"
+      id="adminCode"
+      name="adminCode"
+      value={formData.adminCode || ''}
+      onChange={handleChange}
+      className="w-full bg-transparent border-b-2 border-gray-300 focus:border-black focus:outline-none py-2 text-gray-900"
+      required
+    />
+  </div>
+)}
 
           {/* Submit Button */}
           <button

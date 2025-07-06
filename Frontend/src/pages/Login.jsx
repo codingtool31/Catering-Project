@@ -18,14 +18,28 @@ function Login() {
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Login Form Submitted', formData);
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+  try {
+    const response = await fetch('http://localhost:5000/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData),
+    });
 
-    // Simulate successful login
-    // In a real-world scenario, you would authenticate the user here
-    navigate('/dashboard');  // Redirect to the Dashboard page upon successful login
-  };
+    const data = await response.json();
+    if (response.ok) {
+      console.log('Login successful:', data);
+      navigate('/dashboard');
+    } else {
+      alert(data.message || 'Login failed');
+    }
+  } catch (error) {
+    console.error('Login error:', error);
+    alert('Login failed');
+  }
+};
+
 
   return (
     <div className="flex flex-col justify-center items-center min-h-screen bg-gray-100 py-12">
